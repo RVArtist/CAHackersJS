@@ -1,13 +1,43 @@
+/* Global CSS Variables */
+:root {
+    --main-box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    --main-transition: all 500ms ease-in-out;
+    --dark-text: #f0f0f0;
+    --dark-bg: #010101;
+    --light-bg: #f0f0f0;
+}
+
+html {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
 #get-recipes {
+    /* Overrides */
+    border: none;
+    box-shadow: var(--main-box-shadow);
+    outline: inherit;
+    cursor: pointer;
+    /* styles */
     display: block;
     margin: 1rem auto;
+    height: 50px;
+    width: 150px;
+    font-size: 1.2rem;
+    transition: var(--main-transition);
+    background-color: var(--light-bg);
+    border-radius: 25px;
+
+}
+#get-recipes:hover {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
 }
 
 #recipe-img {
     display: block;
     margin: auto;
     aspect-ratio: auto;
-    transition: 500ms ease-in-out;
+    transition: var(--main-transition);
 }
 #recipe-img:hover {
     transform: scale(1.2);
@@ -20,4 +50,5 @@
     height: 200px;
     border-radius: 15px;
     overflow: hidden;
+    box-shadow: var(--main-box-shadow);
 }
