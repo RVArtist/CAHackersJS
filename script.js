@@ -3,6 +3,7 @@ const btn = document
   .getElementById('get-recipes')
   .addEventListener('click', getRecipeData);
 const recipeImage = document.getElementById('recipe-img');
+const ingredientsDiv = document.querySelector('.ingredients');
 // Base URL for Fetch request
 const baseUrl =
   'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?';
@@ -14,8 +15,7 @@ if (recipeImage.src === '') {
 
 // Core functions
 function populateData(data) {
-  recipeImage.parentElement.style.display = ''; // remove the style="none" for containing div when we pass img element an image
-  const ingredientsDiv = document.querySelector('.ingredients');
+  recipeImage.parentElement.style.display = ''; // remove style="none" property for containing div when populating the DOM
   const {
     image,
     title,
@@ -32,7 +32,6 @@ function populateData(data) {
   document.getElementById('recipe-name').innerText = title;
   document.querySelector('.summary').innerHTML = recipeSummary;
   recipeImage.src = image;
-  // extended ingredients (list of objects) -> append each ingredient to a list in div .ingredients
 
   // Add each ingredient into the ingredientsDiv DOM div
   const ul = document.createElement('ul');
