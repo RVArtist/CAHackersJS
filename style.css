@@ -35,7 +35,6 @@ html {
 
 #recipe-img {
     display: block;
-    margin: auto;
     aspect-ratio: auto;
     transition: var(--main-transition);
 }
@@ -45,10 +44,26 @@ html {
 
 .image-container {
     display: block;
+    position: relative;
     margin: 0 auto;
     width: 200px;
     height: 200px;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: var(--main-box-shadow);
+}
+
+.information {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.ingredients {
+    width: 40%;
+}
+
+.summary {
+    width: 60%;
 }

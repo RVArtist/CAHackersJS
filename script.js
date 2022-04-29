@@ -7,19 +7,42 @@ const recipeImage = document.getElementById('recipe-img');
 const baseUrl =
   'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?';
 
+// If no recipe image present, hide the parent div from DOM
 if (recipeImage.src === '') {
   recipeImage.parentElement.style.display = 'none';
 }
 
 // Core functions
 function populateData(data) {
-  // target DOM elements
-  const recipeName = document.getElementById('recipe-name');
-  recipeImage.parentElement.style.display = ''; // remove the style="none" when we pass it in an image
+  recipeImage.parentElement.style.display = ''; // remove the style="none" for containing div when we pass img element an image
+  const ingredientsDiv = document.querySelector('.ingredients');
+  const {
+    image,
+    title,
+    instructions,
+    summary: recipeSummary,
+    extendedIngredients: ingredients,
+  } = data.recipes[0]; // destructure data
 
-  const { image, title } = data.recipes[0]; // destructure data
+  // Clears previous text if the ingredientsDiv already contains text (list items)
+  if (ingredientsDiv.innerText !== '') {
+    ingredientsDiv.innerText = '';
+  }
+
+  document.getElementById('recipe-name').innerText = title;
+  document.querySelector('.summary').innerHTML = recipeSummary;
   recipeImage.src = image;
-  recipeName.innerText = title;
+  // extended ingredients (list of objects) -> append each ingredient to a list in div .ingredients
+
+  // Add each ingredient into the ingredientsDiv DOM div
+  const ul = document.createElement('ul');
+  ingredientsDiv.appendChild(ul);
+
+  ingredients.forEach((ingredient) => {
+    const li = document.createElement('li');
+    li.innerText = ingredient.original;
+    ul.appendChild(li);
+  });
 }
 
 function getRecipeData() {
