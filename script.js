@@ -4,6 +4,7 @@ const btn = document
   .addEventListener('click', getRecipeData);
 const recipeImage = document.getElementById('recipe-img');
 const recipeName = document.getElementById('recipe-name');
+// extendsIngredients
 // Base URL for Fetch Request
 const baseUrl =
   'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?';
