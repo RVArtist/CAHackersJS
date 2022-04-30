@@ -1,18 +1,17 @@
-// Listen for button click to initiate Fetch process
-const btn = document
-  .getElementById('get-recipes')
-  .addEventListener('click', getRecipeData);
-const recipeImage = document.getElementById('recipe-img');
-const ingredientsDiv = document.querySelector('.ingredients');
-// Base URL for Fetch request
-const baseUrl =
-  'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?';
 
+const ingredientsDiv = document.querySelector('.ingredients');
+const form = document.getElementById('recipe-search');
+const baseUrl = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?'
+
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  getRecipeData();
+});
+const recipeImage = document.getElementById('recipe-img');
 // If no recipe image present, hide the parent div from DOM
 if (recipeImage.src === '') {
   recipeImage.parentElement.style.display = 'none';
 }
-
 // Core functions
 function populateData(data) {
   recipeImage.parentElement.style.display = ''; // remove style="none" property for containing div when populating the DOM
@@ -53,11 +52,30 @@ function getRecipeData() {
     },
   };
 
-  fetch(`${baseUrl}number=1&tags=vegetarian%2Cdessert`, options)
+  fetch(requestUrl(), options)
     .then((response) => response.json())
     .then((data) => {
       console.log(data.recipes[0]); // TEMPORARY --> console.log the object in the data payload
       populateData(data); // Pass the parsed json (data) to populateData function
     })
     .catch((err) => console.error(err));
+}
+
+// create request URL function assigns to a variable
+let requestUrl = function () {
+  const tags = document.getElementById('tags');
+  const paramString = tags.value.replace(/ /g,"%20");
+  
+  const recipeNum = document.getElementById('amount');
+  const amount = recipeNum.value;
+
+  return baseUrl + 'tags=' + paramString + '&number=' + amount;
+}
+
+// create error handlinng function
+function handleError(error) {
+  console.log(error.message);
+  document.getElementById(
+    'main-section'
+    ).innerHTML = `<p style='color: red'>Something went wrong, try again</p>`
 }

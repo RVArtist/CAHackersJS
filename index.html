@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <button id="get-recipes">Get Recipes</button>
-
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css" />
+  <title>Recipt Heaven</title>
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand">Recipe Heaven</a>
+      <form id='recipe-search' class="d-flex">
+        <label class="input-group-text" for="requirement">Requirements</label>
+        <input id='tags' class="form-control" type="search" name="requirement" placeholder="keywords" aria-label="Search">
+        <label class="input-group-text" for="amount">numbers</label>
+        <input id="amount" type="number" class="form-control"  name="amount" placeholder="1-100" min="1" max="100">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <section id='main-section'>
     <h1 id="recipe-name" style="text-align: center"></h1>
     <div class="image-container">
       <img id="recipe-img" width="300" height="300" />
@@ -19,8 +31,9 @@
       <div class="summary"></div>
       <div class="ingredients"></div>
     </div>
-    <script src="script.js"></script>
-  </body>
+  </section>
+  <script src='./script.js'></script>
+</body>
 </html>
 
 <!-- Recipe name, picture, ingredients, nutrients, 
