@@ -1,11 +1,9 @@
-<<<<<<< HEAD
 const form = document.getElementById('recipe-search');
 const baseUrl = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?'
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
  
-=======
 // Listen for button click to initiate Fetch process
 const btn = document
   .getElementById('get-recipes')
@@ -54,13 +52,11 @@ function populateData(data) {
 }
 
 function getRecipeData() {
->>>>>>> origin/ash-dev
   const options = {
     method: 'GET',
     headers: {
       'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
       'X-RapidAPI-Key': '95bf4e37b4mshe8cb692a716b2e3p190df5jsnb5e4f313f0e0',
-<<<<<<< HEAD
     }
   };
   
@@ -88,7 +84,6 @@ function handleError(error) {
     'main-section'
     ).innerHTML = `<p style='color: red'>Something went wrong, try again</p>`
 }
-=======
     },
   };
 
@@ -100,4 +95,3 @@ function handleError(error) {
     })
     .catch((err) => console.error(err));
 }
->>>>>>> origin/ash-dev
