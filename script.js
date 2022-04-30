@@ -54,11 +54,9 @@ function getRecipeData() {
 
   fetch(requestUrl(), options)
     .then((response) => response.json())
-    .then((data) => {
-      console.log(data.recipes[0]); // TEMPORARY --> console.log the object in the data payload
-      populateData(data); // Pass the parsed json (data) to populateData function
-    })
-    .catch((err) => console.error(err));
+    .then(data => createCards(data))
+    .catch(handleError)
+    .finally(() => (tags.value = '', amount.value = ''));
 }
 
 // create request URL function assigns to a variable
@@ -79,3 +77,31 @@ function handleError(error) {
     'main-section'
     ).innerHTML = `<p style='color: red'>Something went wrong, try again</p>`
 }
+
+// create cards generator function
+function createCards(data) {
+  console.log(data.recipes);
+  document.getElementById('cards-container').innerHTML = ''; // clean all previous cards
+  // data.recipes.forEach((recipe, index) => {
+  for (i in data.recipes) {
+    const { title, image } = data.recipes[i];
+    
+    document.getElementById('cards-container').innerHTML += `
+    <div class="cards col mb-4">
+      <div class="card border-dark h-100">
+      <div class="card-header" mb-2>${title}}</div>
+      <img src=${image} class="thumbnail card-img-top" alt="recipe image" />
+      <div class="card-body">
+      <button class: "btn btn-outline-success" type="submit">More details</button>
+      </div>
+    </div>
+    `;
+  }
+}
+
+
+// create card details function
+const button = document.querySelector('button').addEventListener('click', (event) => {
+  // need to show clicked card details
+  console.log("show more recipe details of the card");
+})
