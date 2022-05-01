@@ -5,6 +5,8 @@
     --dark-text: #f0f0f0;
     --dark-bg: #010101;
     --light-bg: #f0f0f0;
+    --content-heading-color: color: #28a745;
+    --background-gradient: linear-gradient(to right, #343a40, #3E5151);
 }
 
 html {
@@ -64,11 +66,11 @@ html {
 .information > div {
     color: #fff;
     padding: 1rem;
-    background-image: linear-gradient(to right, #343a40, #3E5151);
+    background-image: var(--background-gradient);
 }
 
 .information h2 {
-    color: #28a745;
+    color: var(--content-heading-color);
     font-weight: 600;
 }
 
