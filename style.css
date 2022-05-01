@@ -1,10 +1,12 @@
 /* Global CSS Variables */
 :root {
     --main-box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    --main-transition: all 500ms ease-in-out;
+    --main-transition: all 600ms ease-in-out;
     --dark-text: #f0f0f0;
     --dark-bg: #010101;
     --light-bg: #f0f0f0;
+    --content-heading-color: #28a745;
+    --background-gradient: linear-gradient(to right, #343a40, #3E5151);
 }
 
 html {
@@ -37,9 +39,22 @@ html {
     aspect-ratio: auto;
     width: 45vw;
     height: 45vh;
+}
+
+.card {
+    overflow: hidden;
+}
+.card-header, .card-body {
+    text-align: center;
+    background: #fff;
+    z-index: 2;
+}
+.thumbnail {
+    overflow: hidden;
     transition: var(--main-transition);
 }
-#recipe-img:hover {
+.thumbnail:hover {
+    cursor: pointer;
     transform: scale(1.2);
 }
 
@@ -59,7 +74,17 @@ html {
     justify-content: space-between;
     margin-left: 1.5rem;
     gap: 3rem;
-    background-color: rgb(127, 240, 255);
+}
+
+.information > div {
+    color: #fff;
+    padding: 1rem;
+    background-image: var(--background-gradient);
+}
+
+.information h2 {
+    color: var(--content-heading-color);
+    font-weight: 600;
 }
 
 .info-item-container {
@@ -84,6 +109,7 @@ html {
     margin-bottom: 1rem;
 }
 
+/* Media Queries */
 @media screen and (min-width: 500px) {
     .information {
         flex-flow:  row wrap;
