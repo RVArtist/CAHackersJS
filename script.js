@@ -1,10 +1,40 @@
 const form = document.getElementById('recipe-search');
 const baseUrl = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?'
 
+const featureColours = {
+  vegetarian: '#BEBEB0',
+  vegan: '#00FF00',
+  glutenFree: '#F563B1',
+  dairyFree: '#F04F3F',
+  veryHealthy: '#C8B76F',
+  cheap: '#8574FF',
+  veryPopular: '#55ACFF',
+  sustainable: '#CDBC72',
+  weightWatcherSmartPoints: '#8874FF',
+  gaps: '#A75545',
+  lowFodmap: '#BFCE20',
+  aggregateLikes: '#C2C1D4',
+  spoonacularScore: '#9D9AD5',
+  healthScore: '#FDE03E',
+  pricePerServing: '#C4C2DA',
+};
+
+function createFeatureBadges(data){
+let initial =""
+for (const [key, value] of Object.entries(data)) {
+  if(value === true){
+    initial+= `<span class='badge badge-pill badge-primary increase-size' style= "background-color: ${featureColours[key]};">${key}</span>`;
+  }
+}
+return initial;
+}
+
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   getRecipeData();
 });
+
+document.getElementById('main-section').style.display = "none";
 const recipeImage = document.getElementById('recipe-img');
 // If no recipe image present, hide the parent div from DOM
 if (recipeImage.src === '') {
@@ -13,13 +43,14 @@ if (recipeImage.src === '') {
 // Core functions
 function populateData(data) {
   recipeImage.parentElement.style.display = ''; // remove the style="none" for containing div when we pass img element an image
+  document.getElementById('main-section').style.display = "block";
   const ingredientsDiv = document.querySelector('.ingredients');
   const {
     image,
     title,
     instructions,
     summary: recipeSummary,
-    extendedIngredients: ingredients,
+    extendedIngredients: ingredients
   } = data.recipes[0]; // destructure data
 
   // Clears previous text if the ingredientsDiv already contains text (list items)
@@ -28,10 +59,16 @@ function populateData(data) {
   }
 
   document.getElementById('recipe-name').innerText = title;
+  document.getElementById('summary-title').innerText = "Summary";
+    //Adds badges for recipe features
+  document.getElementById('feature-badges').innerHTML = `${createFeatureBadges(data.recipes[0])}`;
   document.querySelector('.summary').innerHTML = recipeSummary;
+  document.getElementById('instruction-title').innerText = "Cooking Instructions";
+  document.querySelector('.instructions').innerHTML = instructions;
   recipeImage.src = image;
   // extended ingredients (list of objects) -> append each ingredient to a list in div .ingredients
 
+  document.getElementById('ingredient-title').innerText = "Ingredients";
   // Add each ingredient into the ingredientsDiv DOM div
   const ul = document.createElement('ul');
   ingredientsDiv.appendChild(ul);
@@ -58,7 +95,10 @@ function getRecipeData() {
       console.log(data.recipes[0]); // TEMPORARY --> console.log the object in the data payload
       populateData(data); // Pass the parsed json (data) to populateData function
     })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      console.error(err);
+      handleError(err);
+    });
 }
 
 // create request URL function assigns to a variable
