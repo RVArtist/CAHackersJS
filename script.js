@@ -71,14 +71,17 @@ function handleError(error) {
   ).innerHTML = `<p style='color: red'>Something went wrong, try again</p>`;
 }
 
+let recipeArr = {};
+const btnGoBack = document.getElementById('back-btn');
 // create cards generator function
 function createCards(data) {
+  recipeArr = data;
   const cardsContainer = document.getElementById('cards-container');
   cardsContainer.innerHTML = ''; // clean all previous cards
   cardsContainer.className =
     'd-flex justify-content-center row row-cols-sm-1 row-cols-md-2 row-cols-lg-4'; // adds classes back when doing additional searches
-
   for (i in data.recipes) {
+    console.log("in loop checking",this);
     const recipe = data.recipes[i]; // pass populateData function the full recipe[i] object
     const { title, image } = data.recipes[i];
     document.getElementById('cards-container').innerHTML += `
@@ -92,7 +95,6 @@ function createCards(data) {
     </div>
     `;
   }
-
   // event listeners for creating more-details layout
   // user can click either 'more-details' or the thumbnail img
   const btns = document.querySelectorAll('.more-details');
@@ -123,9 +125,8 @@ function createCards(data) {
 
 function populateData(data) {
   console.log('You clicked the button!:');
-  console.log(data);
   // recipeImage.parentElement.style.display = ''; // remove the style="none" for containing div when we pass img element an image
-  document.getElementById('main-section').style.display = 'block';
+  document.getElementById('main-section').style.display = "block";
 
   const {
     image,
@@ -187,5 +188,10 @@ function populateData(data) {
     const li = document.createElement('li');
     li.innerText = ingredient.original;
     ul.appendChild(li);
+  });
+
+  //Event listner for go back to cards
+  btnGoBack.addEventListener('click', (event) => {
+    createCards(recipeArr);
   });
 }
