@@ -14,7 +14,7 @@
       <a class="navbar-brand">Recipe Heaven</a>
       <form id='recipe-search' class="d-flex flex-column flex-md-row flex-lg-row">
         <label class="input-group-text" for="requirement">Requirements</label>
-        <input id='tags' class="form-control" type="search" name="requirement" placeholder="keywords" aria-label="Search">
+        <input id='tags' class="form-control" type="search" name="requirement" placeholder="keywords" maxlength="30" aria-label="Search">
         <label class="input-group-text" for="amount">numbers</label>
         <input id="amount" type="number" class="form-control"  name="amount" placeholder="1-100" min="1" max="100">
         <button class="btn btn-outline-success" type="submit">Search</button>
@@ -22,6 +22,7 @@
     </div>
   </nav>
   <section id='main-section'>
+    <div id='cards-container' class="d-flex justify-content-center row row-cols-sm-1 row-cols-md-2 row-cols-lg-4"></div>
     <h1 id="recipe-name" style="text-align: center"></h1>
     <div id="feature-badges"></div>
     <div class="image-container">
