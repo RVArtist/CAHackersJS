@@ -156,7 +156,6 @@ function populateData(data) {
   document.getElementById('instruction-title').innerText =
     'Cooking Instructions';
   document.querySelector('.instructions').innerHTML = instructions;
-  // recipeImage.src = image;
 
   document.getElementById('ingredient-title').innerText = 'Ingredients';
   // Add each ingredient into the ingredientsDiv DOM div
