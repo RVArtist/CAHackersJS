@@ -59,7 +59,17 @@ html {
     justify-content: space-between;
     margin-left: 1.5rem;
     gap: 3rem;
-    background-color: rgb(127, 240, 255);
+}
+
+.information > div {
+    color: #fff;
+    padding: 1rem;
+    background-image: linear-gradient(to right, #343a40, #3E5151);
+}
+
+.information h2 {
+    color: #28a745;
+    font-weight: 600;
 }
 
 .info-item-container {
