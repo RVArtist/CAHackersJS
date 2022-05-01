@@ -8,7 +8,7 @@
 }
 
 html {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #get-recipes {
@@ -34,8 +34,9 @@ html {
 }
 
 #recipe-img {
-    display: block;
     aspect-ratio: auto;
+    width: 45vw;
+    height: 45vh;
     transition: var(--main-transition);
 }
 #recipe-img:hover {
@@ -43,27 +44,48 @@ html {
 }
 
 .image-container {
-    display: block;
+    display: flex;
+    justify-content: center;
     position: relative;
-    margin: 0 auto;
-    width: 200px;
-    height: 200px;
     border-radius: 15px;
     overflow: hidden;
     box-shadow: var(--main-box-shadow);
 }
 
+
 .information {
     margin-top: 1rem;
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    margin-left: 1.5rem;
+    gap: 3rem;
+    background-color: rgb(127, 240, 255);
 }
 
-.ingredients {
-    width: 40%;
+.info-item-container {
+    display: flex;
+    flex-flow: column wrap;
+    border: 1px solid black;
+    margin-right: 1.5rem;
+    margin-bottom: 1rem;
+    flex-basis: 100%;
 }
 
-.summary {
-    width: 60%;
+.info-item-container:nth-child(1){
+    flex: 45%;
+}
+
+.info-item-container:nth-child(2){
+    flex: 45%;
+}
+
+#feature-badges{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 500px) {
+    .information {
+        flex-flow:  row wrap;
+    }
 }
