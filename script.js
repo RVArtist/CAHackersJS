@@ -26,7 +26,7 @@ function createFeatureBadges(data) {
   for (const [key, value] of Object.entries(data)) {
     if (value === true) {
       console.log(value);
-      initial += `<span class='badge badge-pill badge-primary increase-size' style= "background-color: ${featureColours[key]};">${key}</span>`;
+      initial += `<span class='badge badge-pill badge-primary increase-size mx-1' style="background-color: ${featureColours[key]};">${key}</span>`;
     }
   }
   return initial;
@@ -73,7 +73,10 @@ function handleError(error) {
 
 // create cards generator function
 function createCards(data) {
-  document.getElementById('cards-container').innerHTML = ''; // clean all previous cards
+  const cardsContainer = document.getElementById('cards-container');
+  cardsContainer.innerHTML = ''; // clean all previous cards
+  cardsContainer.className =
+    'd-flex justify-content-center row row-cols-sm-1 row-cols-md-2 row-cols-lg-4'; // adds classes back when doing additional searches
 
   for (i in data.recipes) {
     const recipe = data.recipes[i]; // pass populateData function the full recipe[i] object
@@ -89,12 +92,17 @@ function createCards(data) {
     </div>
     `;
 
-    // create card details function
+    // event listeners for creating more-details layout
+    // user can click either 'more-details' or the thumbnail img
     document
       .querySelector('.more-details')
       .addEventListener('click', (event) => {
         populateData(recipe);
       });
+
+    document.querySelector('.thumbnail').addEventListener('click', (event) => {
+      populateData(recipe);
+    });
   }
 }
 
