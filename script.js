@@ -83,7 +83,7 @@ function createCards(data) {
     const recipe = data.recipes[i]; // pass populateData function the full recipe[i] object
     const { title, image } = data.recipes[i];
     document.getElementById('cards-container').innerHTML += `
-    <div class="cards col mb-4">
+    <div class="cards col my-4">
       <div class="card border-dark h-100">
       <div class="card-header" mb-2>${title}</div>
       <img src=${image} class="thumbnail card-img-top" alt="recipe image" />
