@@ -84,6 +84,7 @@ html {
     margin-bottom: 1rem;
 }
 
+/* Media Queries */
 @media screen and (min-width: 500px) {
     .information {
         flex-flow:  row wrap;
