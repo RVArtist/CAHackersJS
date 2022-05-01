@@ -20,14 +20,16 @@ const featureColours = {
   pricePerServing: '#C4C2DA',
 };
 
-function createFeatureBadges(data){
-let initial =""
-for (const [key, value] of Object.entries(data)) {
-  if(value === true){
-    initial+= `<span class='badge badge-pill badge-primary increase-size' style= "background-color: ${featureColours[key]};">${key}</span>`;
+// creates the pills for badge elements using template strings
+function createFeatureBadges(data) {
+  let initial = '';
+  for (const [key, value] of Object.entries(data)) {
+    if (value === true) {
+      console.log(value);
+      initial += `<span class='badge badge-pill badge-primary increase-size mx-1' style="background-color: ${featureColours[key]};">${key}</span>`;
+    }
   }
-}
-return initial;
+  return initial;
 }
 
 form.addEventListener('submit', (event) => {
@@ -35,8 +37,7 @@ form.addEventListener('submit', (event) => {
   getRecipeData();
 });
 
-
-// create request URL function assigns to a variable
+// create request URL function & assigns to baseUrl variable
 let requestUrl = function () {
   const tags = document.getElementById('tags');
   const paramString = tags.value.replace(/ /g, '%20');
@@ -46,7 +47,6 @@ let requestUrl = function () {
 
   return baseUrl + 'tags=' + paramString + '&number=' + amount;
 };
-
 
 function getRecipeData() {
   const options = {
@@ -60,10 +60,8 @@ function getRecipeData() {
   fetch(requestUrl(), options)
     .then((response) => response.json())
     .then((data) => createCards(data))
-    .catch(handleError)
-    .finally(() => ((tags.value = ''), (amount.value = '')));
+    .finally(() => ((tags.value = ''), (amount.value = ''))); // clears input fields after search
 }
-
 
 // create error handlinng function
 function handleError(error) {
@@ -75,33 +73,41 @@ function handleError(error) {
 
 // create cards generator function
 function createCards(data) {
-  console.log(data.recipes);
-  document.getElementById('cards-container').innerHTML = ''; // clean all previous cards
+  const cardsContainer = document.getElementById('cards-container');
+  cardsContainer.innerHTML = ''; // clean all previous cards
+  cardsContainer.className =
+    'd-flex justify-content-center row row-cols-sm-1 row-cols-md-2 row-cols-lg-4'; // adds classes back when doing additional searches
 
   for (i in data.recipes) {
+    const recipe = data.recipes[i]; // pass populateData function the full recipe[i] object
     const { title, image } = data.recipes[i];
-    console.log(title);
     document.getElementById('cards-container').innerHTML += `
     <div class="cards col mb-4">
       <div class="card border-dark h-100">
       <div class="card-header" mb-2>${title}</div>
       <img src=${image} class="thumbnail card-img-top" alt="recipe image" />
       <div class="card-body d-flex justify-content-center ">
-        <button class="btn btn-outline-success" type="button">More Details</button>
+        <button class="more-details btn btn-outline-success" type="button">More Details</button>
       </div>
     </div>
     `;
   }
-}
 
-// create card details function
-const button = document
-  .querySelector('button')
-  .addEventListener('click', (event) => {
-    // need to show clicked card details- pls change it
-          //populateData(data); // Pass the parsed json (data) to populateData function
-    console.log('show more recipe details of the card');
-  });
+  // event listeners for creating more-details layout
+  // user can click either 'more-details' or the thumbnail img
+  const btns = document.querySelectorAll('.more-details');
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  for (i in data.recipes) {
+    const recipe = data.recipes[i];
+    btns[i].addEventListener('click', (event) => {
+      populateData(recipe);
+    });
+
+    thumbnails[i].addEventListener('click', (event) => {
+      populateData(recipe);
+    });
+  }
+}
 
 // document.getElementById('main-section').style.display = "none";
 // const recipeImage = document.getElementById('recipe-img');
@@ -109,35 +115,70 @@ const button = document
 // if (recipeImage.src === '') {
 //   recipeImage.parentElement.style.display = 'none';
 // }
-// Core functions
+
+/* populate divs with the data from the recipes object
+ * reset any pre-existing when ran again
+ *
+ */
+
 function populateData(data) {
-  recipeImage.parentElement.style.display = ''; // remove the style="none" for containing div when we pass img element an image
-  document.getElementById('main-section').style.display = "block";
-  const ingredientsDiv = document.querySelector('.ingredients');
+  console.log('You clicked the button!:');
+  console.log(data);
+  // recipeImage.parentElement.style.display = ''; // remove the style="none" for containing div when we pass img element an image
+  document.getElementById('main-section').style.display = 'block';
+
   const {
     image,
     title,
     instructions,
     summary: recipeSummary,
-    extendedIngredients: ingredients
-  } = data.recipes[0]; // destructure data
+    extendedIngredients: ingredients,
+  } = data; // destructure data
+
+  document.getElementById('cards-container').className = ''; // reset class list for the new layout
+  document.getElementById('cards-container').innerHTML = `
+  <h1 id="recipe-name" style="text-align: center"></h1>
+  <div id="feature-badges"></div>
+  <div class="image-container">
+    <img id="recipe-img" width="300" height="300" />
+  </div>
+  <div class="information">
+    <div class="info-item-container">
+      <h2 id="summary-title"></h2>
+      <div class="summary"></div>
+    </div>
+    <div class="info-item-container">
+      <h2 id="ingredient-title"></h2>
+      <div class="ingredients"></div>
+    </div>
+    <div class="info-item-container">
+      <h2 id="instruction-title"></h2>
+      <div class="instructions"></div>
+    </div>
+  </div>
+  `;
+
+  const ingredientsDiv = document.querySelector('.ingredients');
 
   // Clears previous text if the ingredientsDiv already contains text (list items)
-  if (ingredientsDiv.innerText !== '') {
-    ingredientsDiv.innerText = '';
-  }
+  // if (ingredientsDiv.innerText !== '') {
+  //   ingredientsDiv.innerText = '';
+  // }
 
+  document.getElementById('recipe-img').src = image;
   document.getElementById('recipe-name').innerText = title;
-  document.getElementById('summary-title').innerText = "Summary";
-    //Adds badges for recipe features
-  document.getElementById('feature-badges').innerHTML = `${createFeatureBadges(data.recipes[0])}`;
+  document.getElementById('summary-title').innerText = 'Summary';
+  //Adds badges for recipe features
+  document.getElementById('feature-badges').innerHTML = `${createFeatureBadges(
+    data
+  )}`;
   document.querySelector('.summary').innerHTML = recipeSummary;
-  document.getElementById('instruction-title').innerText = "Cooking Instructions";
+  document.getElementById('instruction-title').innerText =
+    'Cooking Instructions';
   document.querySelector('.instructions').innerHTML = instructions;
-  recipeImage.src = image;
-  // extended ingredients (list of objects) -> append each ingredient to a list in div .ingredients
+  // recipeImage.src = image;
 
-  document.getElementById('ingredient-title').innerText = "Ingredients";
+  document.getElementById('ingredient-title').innerText = 'Ingredients';
   // Add each ingredient into the ingredientsDiv DOM div
   const ul = document.createElement('ul');
   ingredientsDiv.appendChild(ul);
