@@ -91,16 +91,19 @@ function createCards(data) {
       </div>
     </div>
     `;
+  }
 
-    // event listeners for creating more-details layout
-    // user can click either 'more-details' or the thumbnail img
-    document
-      .querySelector('.more-details')
-      .addEventListener('click', (event) => {
-        populateData(recipe);
-      });
+  // event listeners for creating more-details layout
+  // user can click either 'more-details' or the thumbnail img
+  const btns = document.querySelectorAll('.more-details');
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  for (i in data.recipes) {
+    const recipe = data.recipes[i];
+    btns[i].addEventListener('click', (event) => {
+      populateData(recipe);
+    });
 
-    document.querySelector('.thumbnail').addEventListener('click', (event) => {
+    thumbnails[i].addEventListener('click', (event) => {
       populateData(recipe);
     });
   }
@@ -117,6 +120,7 @@ function createCards(data) {
  * reset any pre-existing when ran again
  *
  */
+
 function populateData(data) {
   console.log('You clicked the button!:');
   console.log(data);
