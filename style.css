@@ -73,12 +73,15 @@ html {
 .information {
     margin-top: 1rem;
     display: flex;
+    flex-flow: column wrap;
     justify-content: space-between;
     margin-left: 1.5rem;
     gap: 3rem;
 }
 
 .information > div {
+    display: flex;
+    flex-flow: column wrap;
     border-radius: 1rem;
     border: none;
     box-shadow: var(--main-box-shadow);
@@ -114,9 +117,16 @@ html {
     margin-bottom: 1rem;
 }
 
+.input-group-text{
+    background:#2037ba5c;
+    color:white;
+    
+}
+
 /* Media Queries */
 @media screen and (min-width: 500px) {
     .information {
         flex-flow:  row wrap;
     }
+
 }
