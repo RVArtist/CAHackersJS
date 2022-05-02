@@ -76,7 +76,8 @@ function getRecipeNutrition(id) {
       'X-RapidAPI-Key': '95bf4e37b4mshe8cb692a716b2e3p190df5jsnb5e4f313f0e0',
     },
   };
-  let requestNutritionUrl = nutritionUrl + id+'/nutritionWidget.json';
+ // let requestNutritionUrl = nutritionUrl + id+'/nutritionWidget.json';
+ let requestNutritionUrl = nutritionUrl + id+'/information?includeNutrition=true';
   fetch(requestNutritionUrl, options)
     .then((response) => response.json())
     .then((nutritionData) => {
@@ -93,7 +94,17 @@ function getRecipeNutrition(id) {
 
 //Fill the Nutrition Facts Widge
 function populateNutritionFacts(nutritionData){
-  document.querySelector('.nutrition').innerHTML = "Calories:"+ nutritionData.calories + " Carbs: "+ nutritionData.carbs
+
+  document.querySelector('.nutrition').innerHTML ='<div>'+ "QuickView: " + 
+  '<span class="badge badge-secondary">'+ nutritionData.nutrition.nutrients[0]["amount"]  + "kcal" +'</span>'+ 
+  '<span> </span>'+
+  '<span class="badge badge-secondary"> '+ nutritionData.nutrition.nutrients[3]["amount"] + 'g Carbs </span>' +
+  '<span> </span>'+
+  '<span class="badge badge-secondary"> '+ nutritionData.nutrition.nutrients[1]["amount"] + ' g </span>' +
+  '<span> </span>'+
+  '<span class="badge badge-secondary"> '+ nutritionData.healthScore + ' Health Score </span>' +
+  
+  '</div>'
 }
 
 
@@ -233,6 +244,7 @@ function populateData(data) {
   });
 
     //add nutrition Widget to the recipe
+
     document.getElementById('nutrition-title').innerText = "Nutrition Facts";
     document.querySelector('.nutrition').innerHTML = getRecipeNutrition(id);
   
