@@ -1,6 +1,9 @@
+//I will be working on nutrition facts spoonacular
 const form = document.getElementById('recipe-search');
 const baseUrl =
   'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?';
+
+const nutritionUrl = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/';
 
 const featureColours = {
   vegetarian: '#BEBEB0',
@@ -62,6 +65,40 @@ function getRecipeData() {
     .then((data) => createCards(data))
     .finally(() => ((tags.value = ''), (amount.value = ''))); // clears input fields after search
 }
+
+
+//fetch nutition facts
+function getRecipeNutrition(id) {
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
+      'X-RapidAPI-Key': '95bf4e37b4mshe8cb692a716b2e3p190df5jsnb5e4f313f0e0',
+    },
+  };
+  let requestNutritionUrl = nutritionUrl + id+'/nutritionWidget.json';
+  fetch(requestNutritionUrl, options)
+    .then((response) => response.json())
+    .then((nutritionData) => {
+      console.log(nutritionData); // testing the data 
+      populateNutritionFacts(nutritionData);
+      
+    })
+    .catch((err) => {
+      console.error(err);
+      handleError(err);
+    });
+    
+}
+
+//Fill the Nutrition Facts Widge
+function populateNutritionFacts(nutritionData){
+  document.querySelector('.nutrition').innerHTML = "Calories:"+ nutritionData.calories + " Carbs: "+ nutritionData.carbs
+}
+
+
+
+
 
 // create error handlinng function
 function handleError(error) {
@@ -129,6 +166,7 @@ function populateData(data) {
   document.getElementById('main-section').style.display = "block";
 
   const {
+    id,// to access the nutritin fact for this particilar recipe
     image,
     title,
     instructions,
@@ -156,6 +194,10 @@ function populateData(data) {
       <h2 id="instruction-title"></h2>
       <div class="instructions"></div>
     </div>
+    <div class="info-item-container">
+    <h2 id="nutrition-title"></h2>
+    <div class="nutrition"></div>
+  </div>
   </div>
   `;
 
@@ -190,6 +232,10 @@ function populateData(data) {
     ul.appendChild(li);
   });
 
+    //add nutrition Widget to the recipe
+    document.getElementById('nutrition-title').innerText = "Nutrition Facts";
+    document.querySelector('.nutrition').innerHTML = getRecipeNutrition(id);
+  
   //Event listner for go back to cards
   btnGoBack.addEventListener('click', (event) => {
     createCards(recipeArr);
