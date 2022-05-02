@@ -1,6 +1,7 @@
 /* Global CSS Variables */
 :root {
     --main-box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    --main-image-box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     --main-transition: all 600ms ease-in-out;
     --dark-text: #f0f0f0;
     --dark-bg: #010101;
@@ -39,6 +40,8 @@ html {
     aspect-ratio: auto;
     width: 45vw;
     height: 45vh;
+    border-radius: 5px;
+    box-shadow: var(--main-image-box-shadow);
 }
 
 .card {
@@ -62,9 +65,8 @@ html {
     display: flex;
     justify-content: center;
     position: relative;
-    border-radius: 15px;
     overflow: hidden;
-    box-shadow: var(--main-box-shadow);
+    padding: 1rem;
 }
 
 
@@ -77,6 +79,9 @@ html {
 }
 
 .information > div {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: var(--main-box-shadow);
     color: #fff;
     padding: 1rem;
     background-image: var(--background-gradient);

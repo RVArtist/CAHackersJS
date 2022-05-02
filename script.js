@@ -1,6 +1,9 @@
+//I will be working on nutrition facts spoonacular
 const form = document.getElementById('recipe-search');
 const baseUrl =
   'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?';
+
+const nutritionUrl = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/';
 
 const featureColours = {
   vegetarian: '#BEBEB0',
@@ -63,6 +66,51 @@ function getRecipeData() {
     .finally(() => ((tags.value = ''), (amount.value = ''))); // clears input fields after search
 }
 
+
+//fetch nutition facts
+function getRecipeNutrition(id) {
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
+      'X-RapidAPI-Key': '95bf4e37b4mshe8cb692a716b2e3p190df5jsnb5e4f313f0e0',
+    },
+  };
+ // let requestNutritionUrl = nutritionUrl + id+'/nutritionWidget.json';
+ let requestNutritionUrl = nutritionUrl + id+'/information?includeNutrition=true';
+  fetch(requestNutritionUrl, options)
+    .then((response) => response.json())
+    .then((nutritionData) => {
+      console.log(nutritionData); // testing the data 
+      populateNutritionFacts(nutritionData);
+      
+    })
+    .catch((err) => {
+      console.error(err);
+      handleError(err);
+    });
+    
+}
+
+//Fill the Nutrition Facts Widge
+function populateNutritionFacts(nutritionData){
+
+  document.querySelector('.nutrition').innerHTML ='<div>'+ "QuickView: " + 
+  '<span class="badge badge-secondary">'+ nutritionData.nutrition.nutrients[0]["amount"]  + "kcal" +'</span>'+ 
+  '<span> </span>'+
+  '<span class="badge badge-secondary"> '+ nutritionData.nutrition.nutrients[3]["amount"] + 'g Carbs </span>' +
+  '<span> </span>'+
+  '<span class="badge badge-secondary"> '+ nutritionData.nutrition.nutrients[1]["amount"] + ' g </span>' +
+  '<span> </span>'+
+  '<span class="badge badge-secondary"> '+ nutritionData.healthScore + ' Health Score </span>' +
+  
+  '</div>'
+}
+
+
+
+
+
 // create error handlinng function
 function handleError(error) {
   console.log(error.message);
@@ -71,18 +119,21 @@ function handleError(error) {
   ).innerHTML = `<p style='color: red'>Something went wrong, try again</p>`;
 }
 
+let recipeArr = {};
+const btnGoBack = document.getElementById('back-btn');
 // create cards generator function
 function createCards(data) {
+  recipeArr = data;
   const cardsContainer = document.getElementById('cards-container');
   cardsContainer.innerHTML = ''; // clean all previous cards
   cardsContainer.className =
     'd-flex justify-content-center row row-cols-sm-1 row-cols-md-2 row-cols-lg-4'; // adds classes back when doing additional searches
-
   for (i in data.recipes) {
+    console.log("in loop checking",this);
     const recipe = data.recipes[i]; // pass populateData function the full recipe[i] object
     const { title, image } = data.recipes[i];
     document.getElementById('cards-container').innerHTML += `
-    <div class="cards col mb-4">
+    <div class="cards col my-4">
       <div class="card border-dark h-100">
       <div class="card-header" mb-2>${title}</div>
       <img src=${image} class="thumbnail card-img-top" alt="recipe image" />
@@ -92,7 +143,6 @@ function createCards(data) {
     </div>
     `;
   }
-
   // event listeners for creating more-details layout
   // user can click either 'more-details' or the thumbnail img
   const btns = document.querySelectorAll('.more-details');
@@ -123,11 +173,11 @@ function createCards(data) {
 
 function populateData(data) {
   console.log('You clicked the button!:');
-  console.log(data);
   // recipeImage.parentElement.style.display = ''; // remove the style="none" for containing div when we pass img element an image
-  document.getElementById('main-section').style.display = 'block';
+  document.getElementById('main-section').style.display = "block";
 
   const {
+    id,// to access the nutritin fact for this particilar recipe
     image,
     title,
     instructions,
@@ -155,6 +205,10 @@ function populateData(data) {
       <h2 id="instruction-title"></h2>
       <div class="instructions"></div>
     </div>
+    <div class="info-item-container">
+    <h2 id="nutrition-title"></h2>
+    <div class="nutrition"></div>
+  </div>
   </div>
   `;
 
@@ -187,5 +241,15 @@ function populateData(data) {
     const li = document.createElement('li');
     li.innerText = ingredient.original;
     ul.appendChild(li);
+  });
+
+    //add nutrition Widget to the recipe
+
+    document.getElementById('nutrition-title').innerText = "Nutrition Facts";
+    document.querySelector('.nutrition').innerHTML = getRecipeNutrition(id);
+  
+  //Event listner for go back to cards
+  btnGoBack.addEventListener('click', (event) => {
+    createCards(recipeArr);
   });
 }
