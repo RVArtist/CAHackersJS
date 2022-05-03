@@ -48,7 +48,7 @@ let requestUrl = function () {
   const recipeNum = document.getElementById('amount');
   const amount = recipeNum.value;
 
-  return baseUrl + 'tags=' + paramString.toLowerCase() + '&number=' + amount;
+  return baseUrl + 'tags=' + paramString + '&number=' + amount;
 };
 
 function getRecipeData() {
@@ -107,6 +107,10 @@ function populateNutritionFacts(nutritionData){
   '</div>'
 }
 
+
+
+
+
 // create error handlinng function
 function handleError(error) {
   console.log(error.message);
@@ -117,7 +121,6 @@ function handleError(error) {
 
 let recipeArr = {};
 const btnGoBack = document.getElementById('back-btn');
-
 // create cards generator function
 function createCards(data) {
   recipeArr = data;
@@ -156,12 +159,21 @@ function createCards(data) {
   }
 }
 
+// document.getElementById('main-section').style.display = "none";
+// const recipeImage = document.getElementById('recipe-img');
+// // If no recipe image present, hide the parent div from DOM
+// if (recipeImage.src === '') {
+//   recipeImage.parentElement.style.display = 'none';
+// }
+
 /* populate divs with the data from the recipes object
  * reset any pre-existing when ran again
  *
  */
 
 function populateData(data) {
+  console.log('You clicked the button!:');
+  // recipeImage.parentElement.style.display = ''; // remove the style="none" for containing div when we pass img element an image
   document.getElementById('main-section').style.display = "block";
 
   const {
@@ -202,6 +214,11 @@ function populateData(data) {
 
   const ingredientsDiv = document.querySelector('.ingredients');
 
+  // Clears previous text if the ingredientsDiv already contains text (list items)
+  // if (ingredientsDiv.innerText !== '') {
+  //   ingredientsDiv.innerText = '';
+  // }
+
   document.getElementById('recipe-img').src = image;
   document.getElementById('recipe-name').innerText = title;
   document.getElementById('summary-title').innerText = 'Summary';
@@ -228,8 +245,8 @@ function populateData(data) {
 
     //add nutrition Widget to the recipe
 
-  document.getElementById('nutrition-title').innerText = "Nutrition Facts";
-  document.querySelector('.nutrition').innerHTML = getRecipeNutrition(id);
+    document.getElementById('nutrition-title').innerText = "Nutrition Facts";
+    document.querySelector('.nutrition').innerHTML = getRecipeNutrition(id);
   
   //Event listner for go back to cards
   btnGoBack.addEventListener('click', (event) => {
