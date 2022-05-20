@@ -1,31 +1,32 @@
 //I will be working on nutrition facts spoonacular
-const form = document.getElementById('recipe-search');
+const form = document.getElementById("recipe-search");
 const baseUrl =
-  'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?';
+  "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?";
 
-const nutritionUrl = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/';
+const nutritionUrl =
+  "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/";
 
 const featureColours = {
-  vegetarian: '#BEBEB0',
-  vegan: '#00FF00',
-  glutenFree: '#F563B1',
-  dairyFree: '#F04F3F',
-  veryHealthy: '#C8B76F',
-  cheap: '#8574FF',
-  veryPopular: '#55ACFF',
-  sustainable: '#CDBC72',
-  weightWatcherSmartPoints: '#8874FF',
-  gaps: '#A75545',
-  lowFodmap: '#BFCE20',
-  aggregateLikes: '#C2C1D4',
-  spoonacularScore: '#9D9AD5',
-  healthScore: '#FDE03E',
-  pricePerServing: '#C4C2DA',
+  vegetarian: "#BEBEB0",
+  vegan: "#00FF00",
+  glutenFree: "#F563B1",
+  dairyFree: "#F04F3F",
+  veryHealthy: "#C8B76F",
+  cheap: "#8574FF",
+  veryPopular: "#55ACFF",
+  sustainable: "#CDBC72",
+  weightWatcherSmartPoints: "#8874FF",
+  gaps: "#A75545",
+  lowFodmap: "#BFCE20",
+  aggregateLikes: "#C2C1D4",
+  spoonacularScore: "#9D9AD5",
+  healthScore: "#FDE03E",
+  pricePerServing: "#C4C2DA",
 };
 
 // creates the pills for badge elements using template strings
 function createFeatureBadges(data) {
-  let initial = '';
+  let initial = "";
   for (const [key, value] of Object.entries(data)) {
     if (value === true) {
       console.log(value);
@@ -35,104 +36,108 @@ function createFeatureBadges(data) {
   return initial;
 }
 
-form.addEventListener('submit', (event) => {
+form.addEventListener("submit", (event) => {
   event.preventDefault();
   getRecipeData();
 });
 
 // create request URL function & assigns to baseUrl variable
 let requestUrl = function () {
-  const tags = document.getElementById('tags');
-  const paramString = tags.value.replace(/ /g, '%20');
+  const tags = document.getElementById("tags");
+  const paramString = tags.value.replace(/ /g, "%20");
 
-  const recipeNum = document.getElementById('amount');
+  const recipeNum = document.getElementById("amount");
   const amount = recipeNum.value;
 
-  return baseUrl + 'tags=' + paramString + '&number=' + amount;
+  return baseUrl + "tags=" + paramString + "&number=" + amount;
 };
 
 function getRecipeData() {
   const options = {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
-      'X-RapidAPI-Key': '95bf4e37b4mshe8cb692a716b2e3p190df5jsnb5e4f313f0e0',
+      "X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+      "X-RapidAPI-Key": "95bf4e37b4mshe8cb692a716b2e3p190df5jsnb5e4f313f0e0",
     },
   };
 
   fetch(requestUrl(), options)
     .then((response) => response.json())
     .then((data) => createCards(data))
-    .finally(() => ((tags.value = ''), (amount.value = ''))); // clears input fields after search
+    .catch((error) => console.error(error))
+    .finally(() => ((tags.value = ""), (amount.value = ""))); // clears input fields after search
 }
-
 
 //fetch nutition facts
 function getRecipeNutrition(id) {
   const options = {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'X-RapidAPI-Host': 'spoonacular-recipe-food-nutrition-v1.p.rapidapi.com',
-      'X-RapidAPI-Key': '95bf4e37b4mshe8cb692a716b2e3p190df5jsnb5e4f313f0e0',
+      "X-RapidAPI-Host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+      "X-RapidAPI-Key": "95bf4e37b4mshe8cb692a716b2e3p190df5jsnb5e4f313f0e0",
     },
   };
- // let requestNutritionUrl = nutritionUrl + id+'/nutritionWidget.json';
- let requestNutritionUrl = nutritionUrl + id+'/information?includeNutrition=true';
+  // let requestNutritionUrl = nutritionUrl + id+'/nutritionWidget.json';
+  let requestNutritionUrl =
+    nutritionUrl + id + "/information?includeNutrition=true";
   fetch(requestNutritionUrl, options)
     .then((response) => response.json())
     .then((nutritionData) => {
-      console.log(nutritionData); // testing the data 
+      console.log(nutritionData); // testing the data
       populateNutritionFacts(nutritionData);
-      
     })
     .catch((err) => {
       console.error(err);
       handleError(err);
     });
-    
 }
 
 //Fill the Nutrition Facts Widge
-function populateNutritionFacts(nutritionData){
-
-  document.querySelector('.nutrition').innerHTML ='<div>'+ "QuickView: " + 
-  '<span class="badge badge-secondary">'+ nutritionData.nutrition.nutrients[0]["amount"]  + "kcal" +'</span>'+ 
-  '<span> </span>'+
-  '<span class="badge badge-secondary"> '+ nutritionData.nutrition.nutrients[3]["amount"] + 'g Carbs </span>' +
-  '<span> </span>'+
-  '<span class="badge badge-secondary"> '+ nutritionData.nutrition.nutrients[1]["amount"] + ' g </span>' +
-  '<span> </span>'+
-  '<span class="badge badge-secondary"> '+ nutritionData.healthScore + ' Health Score </span>' +
-  
-  '</div>'
+function populateNutritionFacts(nutritionData) {
+  document.querySelector(".nutrition").innerHTML =
+    "<div>" +
+    "QuickView: " +
+    '<span class="badge badge-secondary">' +
+    nutritionData.nutrition.nutrients[0]["amount"] +
+    "kcal" +
+    "</span>" +
+    "<span> </span>" +
+    '<span class="badge badge-secondary"> ' +
+    nutritionData.nutrition.nutrients[3]["amount"] +
+    "g Carbs </span>" +
+    "<span> </span>" +
+    '<span class="badge badge-secondary"> ' +
+    nutritionData.nutrition.nutrients[1]["amount"] +
+    " g </span>" +
+    "<span> </span>" +
+    '<span class="badge badge-secondary"> ' +
+    nutritionData.healthScore +
+    " Health Score </span>" +
+    "</div>";
 }
-
-
-
-
 
 // create error handlinng function
 function handleError(error) {
   console.log(error.message);
   document.getElementById(
-    'main-section'
+    "main-section"
   ).innerHTML = `<p style='color: red'>Something went wrong, try again</p>`;
 }
 
 let recipeArr = {};
-const btnGoBack = document.getElementById('back-btn');
+const btnGoBack = document.getElementById("back-btn");
 // create cards generator function
 function createCards(data) {
   recipeArr = data;
-  const cardsContainer = document.getElementById('cards-container');
-  cardsContainer.innerHTML = ''; // clean all previous cards
+  const cardsContainer = document.getElementById("cards-container");
+  cardsContainer.innerHTML = ""; // clean all previous cards
   cardsContainer.className =
-    'd-flex justify-content-center row row-cols-sm-1 row-cols-md-2 row-cols-lg-4'; // adds classes back when doing additional searches
+    "d-flex justify-content-center row row-cols-sm-1 row-cols-md-2 row-cols-lg-4"; // adds classes back when doing additional searches
   for (i in data.recipes) {
-    console.log("in loop checking",this);
+    console.log("in loop checking", this);
     const recipe = data.recipes[i]; // pass populateData function the full recipe[i] object
     const { title, image } = data.recipes[i];
-    document.getElementById('cards-container').innerHTML += `
+    document.getElementById("cards-container").innerHTML += `
     <div class="cards col my-4">
       <div class="card border-dark h-100">
       <div class="card-header" mb-2>${title}</div>
@@ -145,15 +150,15 @@ function createCards(data) {
   }
   // event listeners for creating more-details layout
   // user can click either 'more-details' or the thumbnail img
-  const btns = document.querySelectorAll('.more-details');
-  const thumbnails = document.querySelectorAll('.thumbnail');
+  const btns = document.querySelectorAll(".more-details");
+  const thumbnails = document.querySelectorAll(".thumbnail");
   for (i in data.recipes) {
     const recipe = data.recipes[i];
-    btns[i].addEventListener('click', (event) => {
+    btns[i].addEventListener("click", (event) => {
       populateData(recipe);
     });
 
-    thumbnails[i].addEventListener('click', (event) => {
+    thumbnails[i].addEventListener("click", (event) => {
       populateData(recipe);
     });
   }
@@ -172,12 +177,12 @@ function createCards(data) {
  */
 
 function populateData(data) {
-  console.log('You clicked the button!:');
+  console.log("You clicked the button!:");
   // recipeImage.parentElement.style.display = ''; // remove the style="none" for containing div when we pass img element an image
-  document.getElementById('main-section').style.display = "block";
+  document.getElementById("main-section").style.display = "block";
 
   const {
-    id,// to access the nutritin fact for this particilar recipe
+    id, // to access the nutritin fact for this particilar recipe
     image,
     title,
     instructions,
@@ -185,8 +190,8 @@ function populateData(data) {
     extendedIngredients: ingredients,
   } = data; // destructure data
 
-  document.getElementById('cards-container').className = ''; // reset class list for the new layout
-  document.getElementById('cards-container').innerHTML = `
+  document.getElementById("cards-container").className = ""; // reset class list for the new layout
+  document.getElementById("cards-container").innerHTML = `
   <h1 id="recipe-name" style="text-align: center"></h1>
   <div id="feature-badges"></div>
   <div class="image-container">
@@ -212,44 +217,44 @@ function populateData(data) {
   </div>
   `;
 
-  const ingredientsDiv = document.querySelector('.ingredients');
+  const ingredientsDiv = document.querySelector(".ingredients");
 
   // Clears previous text if the ingredientsDiv already contains text (list items)
   // if (ingredientsDiv.innerText !== '') {
   //   ingredientsDiv.innerText = '';
   // }
 
-  document.getElementById('recipe-img').src = image;
-  document.getElementById('recipe-name').innerText = title;
-  document.getElementById('summary-title').innerText = 'Summary';
+  document.getElementById("recipe-img").src = image;
+  document.getElementById("recipe-name").innerText = title;
+  document.getElementById("summary-title").innerText = "Summary";
   //Adds badges for recipe features
-  document.getElementById('feature-badges').innerHTML = `${createFeatureBadges(
+  document.getElementById("feature-badges").innerHTML = `${createFeatureBadges(
     data
   )}`;
-  document.querySelector('.summary').innerHTML = recipeSummary;
-  document.getElementById('instruction-title').innerText =
-    'Cooking Instructions';
-  document.querySelector('.instructions').innerHTML = instructions;
+  document.querySelector(".summary").innerHTML = recipeSummary;
+  document.getElementById("instruction-title").innerText =
+    "Cooking Instructions";
+  document.querySelector(".instructions").innerHTML = instructions;
   // recipeImage.src = image;
 
-  document.getElementById('ingredient-title').innerText = 'Ingredients';
+  document.getElementById("ingredient-title").innerText = "Ingredients";
   // Add each ingredient into the ingredientsDiv DOM div
-  const ul = document.createElement('ul');
+  const ul = document.createElement("ul");
   ingredientsDiv.appendChild(ul);
 
   ingredients.forEach((ingredient) => {
-    const li = document.createElement('li');
+    const li = document.createElement("li");
     li.innerText = ingredient.original;
     ul.appendChild(li);
   });
 
-    //add nutrition Widget to the recipe
+  //add nutrition Widget to the recipe
 
-    document.getElementById('nutrition-title').innerText = "Nutrition Facts";
-    document.querySelector('.nutrition').innerHTML = getRecipeNutrition(id);
-  
+  document.getElementById("nutrition-title").innerText = "Nutrition Facts";
+  document.querySelector(".nutrition").innerHTML = getRecipeNutrition(id);
+
   //Event listner for go back to cards
-  btnGoBack.addEventListener('click', (event) => {
+  btnGoBack.addEventListener("click", (event) => {
     createCards(recipeArr);
   });
 }
